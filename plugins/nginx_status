@@ -1,0 +1,20 @@
+#!/bin/bash
+
+
+URL=http://localhost/nginx_status
+
+#Recuperamos
+DATA=$(curl -s ${URL} )
+
+TOTAL=$(echo "${DATA}" | head -1 | awk '{print $NF}')
+VALUES=$(echo "${DATA}" | tail -1)
+
+READ=$(echo "${VALUES}" | cut -d" " -f2)
+WRITE=$(echo "${VALUES}" | cut -d" " -f4)
+WAIT=$(echo "${VALUES}" | cut -d" " -f6)
+
+
+echo "total.value ${TOTAL}"
+echo "reading.value ${READ}"
+echo "writing.value ${WRITE}"
+echo "waiting.value ${WAIT}"

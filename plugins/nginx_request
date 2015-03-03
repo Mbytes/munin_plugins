@@ -1,0 +1,10 @@
+#!/bin/bash
+
+URL=http://localhost/nginx_status
+
+#Recuperamos
+DATA=$(curl -s ${URL} | head -3 | tail -1 | awk '{print $NF}')
+
+
+#Devolvemos
+echo "request.value ${DATA}"
