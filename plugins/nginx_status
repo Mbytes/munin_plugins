@@ -1,6 +1,28 @@
 #!/bin/bash
 
 
+if test "$1" = "config"
+then
+  echo "graph_title NGINX status"
+  echo "graph_args --base 1000"
+  echo "graph_category nginx"
+  echo "graph_vlabel Connections"
+  echo "total.label Active connections"
+  echo "total.info  Active connections"
+  echo "total.draw LINE2"
+  echo "reading.label Reading"
+  echo "reading.info  Reading"
+  echo "reading.draw LINE2"
+  echo "writing.label Writing"
+  echo "writing.info  Writing"
+  echo "writing.draw LINE2"
+  echo "waiting.label Waiting"
+  echo "waiting.info  Waiting"
+  echo "waiting.draw LINE2"
+  exit
+fi
+
+
 URL=http://localhost/nginx_status
 
 #Recuperamos
