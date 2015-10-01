@@ -1,0 +1,48 @@
+#!/bin/bash
+#
+# Plugin to monitor the number of PHP5-FPM processes on the machine.
+#
+# Copyright TJ Stein 2010 http://constantshift.com
+#
+# Parameters:
+#
+# config (required)
+# autoconf (optional - used by munin-config)
+#
+
+exit
+
+if [ "$1" = "autoconf" ]; then
+echo yes
+exit 0
+fi
+
+if [ "$1" = "config" ]; then
+echo 'graph_title PHP5-FPM Status'
+echo 'graph_args --base 1024 -l'
+echo 'graph_vlabel Connections'
+echo 'graph_category PHP'
+echo 'graph_order active idle total'
+echo 'graph_info Plugin created by TJ Stein'
+echo 'active.label Active'
+echo 'active.draw AREA'
+echo 'idle.label Idle'
+echo 'idle.draw STACK'
+echo 'total.label Total'
+echo 'total.draw LINE1'
+exit 0
+fi
+
+
+
+
+DATA=$(export SCRIPT_FILENAME="/status" ; export SCRIPT_NAME="/status" ; export REQUEST_METHOD="GET" ; /usr/bin/cgi-fcgi -bind -connect /var/run/php5-fpm.sock )
+#DATA=/usr/share/munin/plugins/phpfpm_stats.sh
+
+echo "${DATA}" | /bin/grep "idle processes" | /usr/bin/awk '{print "idle.value " $NF}'
+echo "${DATA}" | /bin/grep "active processes" | /usr/bin/awk '{print "active.value " $NF}'
+echo "${DATA}" | /bin/grep "total processes" | /usr/bin/awk '{print "total.value " $NF}'
+
+echo "D ${DATA}"
+export
+exit
